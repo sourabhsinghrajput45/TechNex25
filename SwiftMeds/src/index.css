@@ -1,0 +1,23 @@
+@import "tailwindcss";
+/* Apply full viewport background */
+
+body {
+  background: url('/medicalimg.jpg') no-repeat center center fixed; /* Ensure the path is correct */
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Add an overlay for transparency effect */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.2); /* 80% transparency */
+  z-index: -1; /* Behind all content */
+}
