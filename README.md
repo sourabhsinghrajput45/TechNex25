@@ -75,8 +75,8 @@ python app.py
 ```
 
 By default:
-- backend_module01 runs on http://localhost:5001/
-- backend_module02 runs on http://localhost:5002/
+- backend_module01 runs on http://127.0.0.1:5000//
+- backend_module02 runs on http://127.0.0.1:8080//
 
 ### 3️⃣ Frontend Setup
 
@@ -108,8 +108,13 @@ The frontend runs on http://localhost:5173/ and communicates with both backend m
 | GET | /status | Fetches order tracking details |
 
 ## 📸 Screenshots
+![Screenshot (30)](https://github.com/user-attachments/assets/aa6fc55f-6988-4938-8ed7-6fe1bde8db27)
+![Screenshot (31)](https://github.com/user-attachments/assets/ebd400a1-eae5-4049-824c-667e27548efa)
+![Screenshot (32)](https://github.com/user-attachments/assets/a26981e7-a5d9-47f6-ad1d-d63161f08e9d)
+![Screenshot (33)](https://github.com/user-attachments/assets/d6bea53c-8759-4182-83aa-f245e807ce33)
+![Screenshot (34)](https://github.com/user-attachments/assets/351366ad-95b7-42bb-a866-5d44a47df28a)
 
-*[Add screenshots of your application here]*
+
 
 ## 🏗️ Future Improvements
 
@@ -119,13 +124,7 @@ The frontend runs on http://localhost:5173/ and communicates with both backend m
 - Implement real-time notifications for delivery updates
 - Expand the consultation service with additional medical data
 
-## 📜 License
 
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
 ## 👨‍💻 Author
 
