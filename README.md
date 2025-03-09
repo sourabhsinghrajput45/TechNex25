@@ -46,7 +46,7 @@ SwiftMeds/
 ### 1️⃣ Clone the Repository
 
 ```sh
-git clone https://github.com/sourabhrajput45/TechNex25
+git clone https://github.com/sourabhsinghrajput45/TechNex25
 cd SwiftMeds
 ```
 
