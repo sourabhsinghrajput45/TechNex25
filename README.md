@@ -108,6 +108,7 @@ The frontend runs on http://localhost:5173/ and communicates with both backend m
 | GET | /status | Fetches order tracking details |
 
 ## 📸 Screenshots
+![Screenshot (29)](https://github.com/user-attachments/assets/5f12f809-f02b-474a-9f5c-f4940a05f4fe)
 ![Screenshot (30)](https://github.com/user-attachments/assets/aa6fc55f-6988-4938-8ed7-6fe1bde8db27)
 ![Screenshot (31)](https://github.com/user-attachments/assets/ebd400a1-eae5-4049-824c-667e27548efa)
 ![Screenshot (32)](https://github.com/user-attachments/assets/a26981e7-a5d9-47f6-ad1d-d63161f08e9d)
@@ -128,8 +129,8 @@ The frontend runs on http://localhost:5173/ and communicates with both backend m
 
 ## 👨‍💻 Author
 
-Developed by 
-1.Sourabh Singh Rajput
-2.Swayam Dhamunia
-3.Utkarsh Pathak
-4.Aryan Raghuvanshi
+#Developed by 
+- 1.Sourabh Singh Rajput
+- 2.Swayam Dhamunia
+- 3.Utkarsh Pathak
+- 4.Aryan Raghuvanshi
