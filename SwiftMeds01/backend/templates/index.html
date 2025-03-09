@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftMeds - Disease Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #4b6cb7, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+        
+        /* Animated background elements */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.2;
+            filter: blur(15px);
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .bg-element-1 {
+            right: -40px;
+            top: -40px;
+            width: 250px;
+            height: 250px;
+            background-color: rgba(104, 126, 255, 0.5);
+            animation-delay: 0s;
+        }
+        
+        .bg-element-2 {
+            left: 80px;
+            top: 25%;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(170, 128, 255, 0.5);
+            animation-delay: -5s;
+        }
+        
+        .bg-element-3 {
+            bottom: 80px;
+            left: 40px;
+            width: 180px;
+            height: 180px;
+            background-color: rgba(108, 99, 255, 0.5);
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% {transform: translate(0, 0);}
+            25% {transform: translate(30px, 30px);}
+            50% {transform: translate(15px, -15px);}
+            75% {transform: translate(-30px, 15px);}
+        }
+
+        .container {
+            background-color: #fff8f0;
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                        0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                        0 0 30px rgba(79, 70, 229, 0.2);
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0);
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+        }
+        
+        .container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(to bottom right, #4b6cb7, #6a11cb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        p.intro-text {
+            text-align: center;
+            color: #4a5568;
+            font-size: 1.125rem;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-size: 1.1rem;
+            color: #444;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 22px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            color: #333;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6a11cb;
+            box-shadow: 0 2px 10px rgba(106, 17, 203, 0.2);
+            transform: translateY(-2px);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #4b6cb7, #6a11cb);
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: linear-gradient(to right, #3f5bb5, #5e0fb9);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+        
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        #result-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.7s ease, height 0.5s ease;
+            gap: 20px;
+        }
+
+        #inputBox,
+        #outputBox {
+            width: 48%;
+            padding: 25px;
+            border-radius: 16px;
+            color: #fff;
+            text-align: center;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #inputBox {
+            background: linear-gradient(135deg, #6a11cb, #9b4bff);
+        }
+
+        #outputBox {
+            background: linear-gradient(135deg, #2575fc, #1a94ff);
+        }
+
+        #result-container.show {
+            opacity: 1;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .form-container.hide {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        /* Trust indicators */
+        .trust-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .trust-indicator {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .trust-indicator svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 6px;
+        }
+        
+        .terms {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 20px;
+        }
+        
+        .terms span {
+            color: #4b6cb7;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        /* Make sure everything is responsive */
+        @media (max-width: 680px) {
+            .container {
+                max-width: 95%;
+                padding: 30px;
+            }
+            
+            #result-container {
+                flex-direction: column;
+            }
+            
+            #inputBox, #outputBox {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .trust-indicators {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated background elements -->
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+    
+    <div class="container" id="main-container">
+        <!-- Form Container -->
+        <div class="form-container" id="form-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+            </div>
+            
+            <h1>SwiftMeds</h1>
+            <p class="intro-text">Your trusted healthcare partner for diagnosis and medication.</p>
+            
+            <form id="predictionForm">
+                <label for="Symptom_1">Symptom 1:</label>
+                <input type="text" id="Symptom_1" name="Symptom_1" required placeholder="Enter primary symptom">
+
+                <label for="Symptom_2">Symptom 2:</label>
+                <input type="text" id="Symptom_2" name="Symptom_2" required placeholder="Enter secondary symptom">
+
+                <label for="Symptom_3">Symptom 3:</label>
+                <input type="text" id="Symptom_3" name="Symptom_3" required placeholder="Enter additional symptom">
+
+                <button type="submit">Start Your Consultation</button>
+            </form>
+            
+            <div class="terms">
+                By continuing, you agree to our <span>Terms and Conditions</span>.
+            </div>
+            
+            <div class="trust-indicators">
+                <div class="trust-indicator">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span>Secure</span>
+                </div>
+                <div class="trust-indicator">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <span>Private</span>
+                </div>
+                <div class="trust-indicator">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span>Fast</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Container -->
+        <div id="result-container">
+            <div id="inputBox">
+                <h2>Input Symptoms</h2>
+                <p id="inputText"></p>
+            </div>
+            <div id="outputBox">
+                <h2>Predicted Disease</h2>
+                <p id="outputText"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show the container with animation on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('main-container').classList.add('show');
+            }, 300);
+            
+            // Add a button to restart the form after seeing results
+            const resultContainer = document.getElementById('result-container');
+            const resetButton = document.createElement('button');
+            resetButton.innerText = 'Start New Prediction';
+            resetButton.style.marginTop = '20px';
+            resetButton.style.width = '100%';
+            resetButton.addEventListener('click', () => {
+                document.getElementById('form-container').classList.remove('hide');
+                document.getElementById('result-container').classList.remove('show');
+                document.getElementById('predictionForm').reset();
+            });
+            resultContainer.appendChild(resetButton);
+        });
+        
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            // Show loading state on button
+            const button = e.target.querySelector('button');
+            const originalText = button.innerText;
+            button.innerText = 'Processing...';
+            button.disabled = true;
+
+            // Hide the form and show the result container with a slight delay
+            setTimeout(() => {
+                document.getElementById('form-container').classList.add('hide');
+                document.getElementById('result-container').classList.add('show');
+            }, 500);
+
+            // Format the input symptoms nicely
+            const symptoms = [
+                `<strong>Symptom 1:</strong> ${data.Symptom_1}`,
+                `<strong>Symptom 2:</strong> ${data.Symptom_2}`,
+                `<strong>Symptom 3:</strong> ${data.Symptom_3}`
+            ];
+            document.getElementById('inputText').innerHTML = symptoms.join('<br>');
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(data),
+                });
+                
+                const result = await response.json();
+
+                // Show the predicted disease and medication
+                document.getElementById('outputText').innerHTML = `<strong>Disease:</strong> ${result.disease}<br><strong>Medication:</strong> ${result.medication}`;
+            } catch (error) {
+                document.getElementById('outputText').innerHTML = `<span style="color: #ffcccc">Error: Unable to process your request. Please try again.</span>`;
+            } finally {
+                // Reset button state
+                button.innerText = originalText;
+                button.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

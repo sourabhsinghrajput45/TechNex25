@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Availability Result</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f5ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .result-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 {
+            color: #2c4f9e;
+            margin-bottom: 25px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: #4a7bff;
+            border-radius: 2px;
+        }
+        
+        h1 span {
+            animation: highlight 2s ease-in-out;
+            color: #4a7bff;
+        }
+        
+        @keyframes highlight {
+            0% { color: #2c4f9e; }
+            50% { color: #4a7bff; }
+            100% { color: #2c4f9e; }
+        }
+        
+        .result-box {
+            background-color: #f5f8ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 18px;
+            border-left: 5px solid #4a7bff;
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+        
+        .result-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: #4a7bff;
+            animation: pulse-border 2s infinite;
+        }
+        
+        @keyframes pulse-border {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background-color: #4a7bff;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 150px;
+            margin: 20px auto 0;
+        }
+        
+        .back-btn:hover {
+            background-color: #2c4f9e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(42, 78, 158, 0.3);
+        }
+        
+        .back-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .icon {
+            margin-right: 5px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+        
+        .result-available {
+            color: #2e7d32;
+        }
+        
+        .result-unavailable {
+            color: #c62828;
+        }
+        
+        .alternative-locations {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+            animation: fadeInUp 1.5s ease-out;
+        }
+        
+        .location-badge {
+            display: inline-block;
+            background-color: #4a7bff;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            animation: scaleIn 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+        
+        .location-badge:hover {
+            transform: scale(1.05);
+            background-color: #2c4f9e;
+            cursor: pointer;
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .primary-result {
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-again {
+            display: inline-block;
+            background-color: transparent;
+            color: #4a7bff;
+            border: 2px solid #4a7bff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 200px;
+            margin: 10px auto;
+        }
+        
+        .search-again:hover {
+            background-color: #f0f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 123, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <h1>Results for <span>{{ medicine.title() }}</span> in <span>{{ city.title() }}</span></h1>
+        
+        <div class="result-box" id="resultBox">
+            <!-- Content will be filled by JavaScript -->
+        </div>
+        
+        <a href="/" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </a>
+    </div>
+
+    <script>
+        // Sample result - this would be replaced by your template variable in production
+        const resultText = "{{ result }}";
+        const resultBox = document.getElementById('resultBox');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parse the result to identify if there are alternative locations
+            parseAndDisplayResult(resultText);
+        });
+        
+        function parseAndDisplayResult(text) {
+            // Check if "NOT available" and "But it is available in:" pattern exists
+            if (text.includes("NOT available") && text.includes("But it is available in:")) {
+                // Split into main result and alternatives
+                const parts = text.split("But it is available in:");
+                const mainResult = parts[0].trim();
+                let alternativeLocations = parts[1].trim();
+                
+                // Remove the period at the end if exists
+                if (alternativeLocations.endsWith('.')) {
+                    alternativeLocations = alternativeLocations.slice(0, -1);
+                }
+                
+                // Split locations if multiple (comma separated)
+                const locations = alternativeLocations.split(',').map(loc => loc.trim());
+                
+                // Create primary result element
+                const primaryDiv = document.createElement('div');
+                primaryDiv.className = 'primary-result result-unavailable';
+                primaryDiv.innerHTML = '<i class="fas fa-times-circle"></i> ' + mainResult;
+                
+                // Create alternatives section
+                const alternativesDiv = document.createElement('div');
+                alternativesDiv.className = 'alternative-locations';
+                alternativesDiv.innerHTML = '<p>Available in these locations:</p>';
+                
+                // Create badge for each location with slight delay for cascade effect
+                const locationsDiv = document.createElement('div');
+                locationsDiv.className = 'locations-container';
+                
+                locations.forEach((location, index) => {
+                    const badge = document.createElement('span');
+                    badge.className = 'location-badge';
+                    badge.textContent = location;
+                    badge.style.animationDelay = (index * 0.1) + 's';
+                    locationsDiv.appendChild(badge);
+                });
+                
+                alternativesDiv.appendChild(locationsDiv);
+                
+                // Add a "search in these locations" button
+                const searchAgainLink = document.createElement('a');
+                searchAgainLink.href = '/';
+                searchAgainLink.className = 'search-again';
+                searchAgainLink.innerHTML = '<i class="fas fa-search"></i> Search in these cities';
+                
+                // Append all elements
+                resultBox.appendChild(primaryDiv);
+                resultBox.appendChild(alternativesDiv);
+                resultBox.appendChild(searchAgainLink);
+                
+                // Animate text elements
+                animateText(primaryDiv);
+            } else if (text.toLowerCase().includes('available')) {
+                // Available case
+                resultBox.innerHTML = '<div class="primary-result result-available"><i class="fas fa-check-circle"></i> ' + text + '</div>';
+                animateText(resultBox.querySelector('.primary-result'));
+            } else {
+                // Unavailable without alternatives
+                resultBox.innerHTML = '<div class="primary-result result-unavailable"><i class="fas fa-times-circle"></i> ' + text + '</div>';
+                animateText(resultBox.querySelector('.primary-result'));
+            }
+        }
+        
+        // Text reveal animation - modified to handle HTML elements
+        function animateText(element) {
+            // Save the innerHTML with the icon
+            const fullHTML = element.innerHTML;
+            const iconHTML = fullHTML.substring(0, fullHTML.indexOf('</i>') + 4);
+            const text = fullHTML.substring(fullHTML.indexOf('</i>') + 4);
+            
+            // Set only the icon initially
+            element.innerHTML = iconHTML;
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML = iconHTML + text.substring(0, i + 1);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 30);
+        }
+    </script>
+</body>
+</html>
